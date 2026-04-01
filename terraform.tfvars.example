@@ -1,0 +1,90 @@
+# Example terraform.tfvars file for BYOC Stand-Alone Infrastructure
+
+# Project Configuration
+project_name = "byoc"
+aws_region   = "us-east-1"
+
+# VPC Configuration (REQUIRED - from existing VPC)
+# These values must be provided from your existing VPC
+vpc_id               = "vpc-0123456789abcdef0"
+vpc_cidr_block       = "10.0.0.0/16"
+private_subnet_ids   = ["subnet-0123456789abcdef0", "subnet-0123456789abcdef1", "subnet-0123456789abcdef2"]
+private_subnet_cidrs = ["10.0.8.0/22", "10.0.12.0/22", "10.0.16.0/22"]
+
+# EKS Configuration (REQUIRED - from existing EKS cluster)
+# Provide the ARN of your existing EKS cluster
+eks_cluster_arn = "arn:aws:eks:us-east-1:123456789012:cluster/byoc"
+
+# Choose ONE of the following authentication methods:
+# Option 1: Pod Identity (recommended, default)
+enable_pod_identity = true
+# eks_oidc_provider_arn = null  # Leave null when using Pod Identity
+
+# Option 2: OIDC Provider (alternative to Pod Identity)
+# enable_pod_identity = false
+# eks_oidc_provider_arn = "arn:aws:iam::123456789012:oidc-provider/oidc.eks.us-east-1.amazonaws.com/id/EXAMPLED539D4633E53DE1B71EXAMPLE"
+
+# EKS Service Account Configuration
+eks_service_account_namespace = "byoc"
+eks_service_account_name      = "runner"
+
+# RDS Configuration
+rds_db_name     = "byoc"
+rds_db_username = "postgres"
+# rds_db_password            = null  # Leave null to generate random password
+rds_engine_version           = "17.2"
+rds_family                   = "postgres17"
+rds_major_engine_version     = "17"
+rds_instance_class           = "db.t3.micro"
+rds_allocated_storage        = 20
+rds_max_allocated_storage    = 100
+rds_multi_az                 = false
+rds_publicly_accessible      = false
+rds_backup_retention_period  = 7
+rds_force_ssl                = false
+rds_additional_allowed_cidrs = []
+
+# IAM Configuration
+iam_controller_role_name               = "byoc-controlplane"
+build_vm_role_name                     = "byoc-build-vm"
+existing_build_vm_role_arn             = ""
+existing_build_vm_instance_profile_arn = ""
+
+# Security Group Configuration
+security_group_name        = "byoc"
+security_group_description = null
+enable_ssh_access          = true
+ssh_allowed_cidrs          = ["10.0.0.0/16"]
+
+security_group_ingress_rules = [
+  {
+    cidr_blocks = ["10.0.0.0/16"]
+    protocol    = "tcp"
+    from_port   = 9079
+    to_port     = 9079
+    description = "Allow port 9079 from VPC"
+  }
+]
+
+# S3 Configuration
+s3_bucket_name         = "cache-service-s3-bucket"
+harness_ti_bucket_name = "harness-ti"
+
+# Harness OIDC Configuration
+harness_account_id      = "NzQ0MjRjYmQtNWNmMS00OT"
+harness_base_url        = "accounts.harness.io"
+harness_oidc_thumbprint = null
+
+# DataSync Configuration (optional)
+enable_datasync_gcp_to_s3    = true
+gcp_bucket_name              = "harness-ti"
+gcp_bucket_agent_arn         = null
+datasync_schedule_expression = "rate(1 hour)"
+create_datasync_log_group    = false
+
+# Tags
+tags = {
+  Environment = "dev"
+  ManagedBy   = "terraform"
+  Project     = "byoc"
+}

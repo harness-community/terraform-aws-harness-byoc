@@ -73,17 +73,6 @@ output "security_group_name" {
   value       = var.security_group_name != null ? aws_security_group.main[0].name : null
 }
 
-# S3 Outputs
-output "s3_bucket_arn" {
-  description = "ARN of the S3 bucket"
-  value       = aws_s3_bucket.cache_service.arn
-}
-
-output "s3_bucket_name" {
-  description = "Name of the S3 bucket"
-  value       = aws_s3_bucket.cache_service.bucket
-}
-
 # S3 Harness TI Clone Outputs
 output "s3_harness_ti_clone_bucket_arn" {
   description = "ARN of the harness-ti-clone S3 bucket"
@@ -93,52 +82,4 @@ output "s3_harness_ti_clone_bucket_arn" {
 output "s3_harness_ti_clone_bucket_name" {
   description = "Name of the harness-ti-clone S3 bucket"
   value       = aws_s3_bucket.harness_ti.bucket
-}
-
-# S3 Cache Role Outputs
-output "s3_cache_role_arn" {
-  description = "ARN of the S3 cache IAM role"
-  value       = aws_iam_role.s3_cache_role.arn
-}
-
-output "s3_cache_role_name" {
-  description = "Name of the S3 cache IAM role"
-  value       = aws_iam_role.s3_cache_role.name
-}
-
-output "s3_cache_role_id" {
-  description = "ID of the S3 cache IAM role"
-  value       = aws_iam_role.s3_cache_role.id
-}
-
-output "s3_cache_instance_profile_name" {
-  description = "Name of the S3 cache IAM instance profile"
-  value       = aws_iam_instance_profile.s3_cache_role.name
-}
-
-output "s3_cache_instance_profile_arn" {
-  description = "ARN of the S3 cache IAM instance profile"
-  value       = aws_iam_instance_profile.s3_cache_role.arn
-}
-
-# OIDC Identity Provider Outputs
-output "harness_oidc_provider_arn" {
-  description = "ARN of the Harness OIDC identity provider"
-  value       = aws_iam_openid_connect_provider.harness.arn
-}
-
-output "harness_oidc_provider_url" {
-  description = "URL of the Harness OIDC identity provider"
-  value       = aws_iam_openid_connect_provider.harness.url
-}
-
-# DataSync Outputs
-output "datasync_task_arn" {
-  description = "ARN of the DataSync task"
-  value       = var.enable_datasync_gcp_to_s3 ? aws_datasync_task.sync_task[0].arn : null
-}
-
-output "datasync_role_arn" {
-  description = "ARN of the DataSync IAM role"
-  value       = var.enable_datasync_gcp_to_s3 ? aws_iam_role.datasync[0].arn : null
 }

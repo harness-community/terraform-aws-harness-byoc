@@ -218,66 +218,10 @@ variable "security_group_ingress_rules" {
 }
 
 # S3 Variables
-variable "s3_bucket_name" {
-  description = "Name of the S3 bucket"
-  type        = string
-  default     = "cache-service-s3-bucket"
-}
-
 variable "harness_ti_bucket_name" {
   description = "Name of the S3 bucket for Harness TI Clone"
   type        = string
   default     = "harness-ti"
-}
-
-# Harness OIDC Variables
-variable "harness_account_id" {
-  description = "Harness account ID for OIDC identity provider. Replace <ACCOUNT_ID> in the OIDC provider URL: https://accounts.harness.io/ng/api/oidc/account/<ACCOUNT_ID>"
-  type        = string
-  default     = "NzQ0MjRjYmQtNWNmMS00OT"
-}
-
-variable "harness_base_url" {
-  description = "Harness base URL (domain) for OIDC identity provider. The full OIDC URL will be constructed as https://<base_url>/ng/api/oidc/account/<account_id>. Defaults to accounts.harness.io"
-  type        = string
-  default     = "accounts.harness.io"
-}
-
-variable "harness_oidc_thumbprint" {
-  description = "SHA-1 thumbprint of the Harness OIDC provider's SSL/TLS certificate. Leave null (default) to use AWS's automatic root CA trust (recommended). Only specify if Harness uses a self-signed or less common root CA certificate. To get the thumbprint, run: echo | openssl s_client -servername accounts.harness.io -connect accounts.harness.io:443 2>/dev/null | openssl x509 -fingerprint -noout -sha1 | cut -d'=' -f2 | tr -d ':'"
-  type        = string
-  default     = null
-}
-
-# DataSync Variables
-variable "enable_datasync_gcp_to_s3" {
-  description = "Enable DataSync to sync GCP bucket (source) to S3 bucket (destination)"
-  type        = bool
-  default     = true
-}
-
-variable "gcp_bucket_name" {
-  description = "Name of the public GCP bucket to sync from (source)"
-  type        = string
-  default     = "harness-ti"
-}
-
-variable "gcp_bucket_agent_arn" {
-  description = "ARN of the DataSync agent for GCP bucket access. The agent must be deployed and activated before creating the location. Optional for enhanced mode transfers between GCP and S3."
-  type        = string
-  default     = null
-}
-
-variable "datasync_schedule_expression" {
-  description = "Schedule expression for DataSync task (e.g., 'rate(1 hour)')"
-  type        = string
-  default     = "rate(1 hour)"
-}
-
-variable "create_datasync_log_group" {
-  description = "Whether to create the CloudWatch log group for DataSync. Set to false if the log group already exists."
-  type        = bool
-  default     = false
 }
 
 # Tags
