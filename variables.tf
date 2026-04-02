@@ -160,6 +160,12 @@ variable "build_vm_role_name" {
   default     = "byoc-build-vm"
 }
 
+variable "build_vm_role_policies" {
+  description = "List of IAM policy ARNs to attach to the build VM role"
+  type        = list(string)
+  default     = []
+}
+
 variable "existing_build_vm_role_arn" {
   description = "ARN of an existing IAM role to use for the build VMs instead of creating a new one"
   type        = string

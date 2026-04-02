@@ -268,6 +268,12 @@ resource "aws_iam_role_policy" "cloudwatch_logs_policy" {
   depends_on = [aws_iam_role.build_vm_role]
 }
 
+resource "aws_iam_role_policy_attachment" "build_vm_role_policies" {
+  for_each   = toset(var.build_vm_role_policies)
+  role       = aws_iam_role.build_vm_role[0].name
+  policy_arn = each.value
+}
+
 # Instance profile for build VM role
 resource "aws_iam_instance_profile" "build_vm_role" {
   count = var.existing_build_vm_instance_profile_arn == "" ? 1 : 0
