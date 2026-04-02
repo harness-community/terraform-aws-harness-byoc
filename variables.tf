@@ -35,6 +35,7 @@ variable "private_subnet_cidrs" {
 variable "eks_cluster_arn" {
   description = "ARN of the existing EKS cluster (used for IAM Pod Identity)"
   type        = string
+  default     = null
 }
 
 variable "eks_oidc_provider_arn" {
@@ -149,9 +150,15 @@ variable "rds_additional_allowed_cidrs" {
 
 # IAM Variables
 variable "iam_controller_role_name" {
-  description = "Name of the IAM role for the controller"
+  description = "Name of the IAM role for the controller; Leave out to disable role creation"
   type        = string
   default     = "byoc-controlplane"
+}
+
+variable "create_policies" {
+  description = "Whether to create IAM policies for the controller, to be used externally"
+  type        = bool
+  default     = true
 }
 
 variable "build_vm_role_name" {

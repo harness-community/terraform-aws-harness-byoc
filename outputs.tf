@@ -47,6 +47,11 @@ output "iam_controller_role_name" {
   value       = var.iam_controller_role_name != null ? aws_iam_role.cp_role[0].name : null
 }
 
+output "iam_controller_policy_arns" {
+  description = "ARNs of the IAM controller policies"
+  value       = var.iam_controller_role_name != null || var.create_policies ? [aws_iam_policy.cp_runner_policy[0].arn, aws_iam_policy.cp_s3_read_policy[0].arn] : null
+}
+
 output "iam_build_vm_instance_profile_name" {
   description = "Name of the IAM build VM instance profile"
   value       = var.existing_build_vm_instance_profile_arn == "" ? aws_iam_instance_profile.build_vm_role[0].name : null
