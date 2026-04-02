@@ -61,10 +61,9 @@ resource "aws_iam_role" "cp_role" {
 }
 
 # Attach custom EC2 permissions policy to the controller role
-resource "aws_iam_role_policy" "cp_runner_policy" {
-  count = var.iam_controller_role_name != null ? 1 : 0
-  name  = "${var.iam_controller_role_name}-cp-runner-policy"
-  role  = aws_iam_role.cp_role[0].id
+resource "aws_iam_policy" "cp_runner_policy" {
+  count = var.iam_controller_role_name != null || var.create_policies ? 1 : 0
+  name  = "${var.iam_controller_role_name != null ? var.iam_controller_role_name : "harness-byoc-cp-role"}-cp-runner-policy"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -161,10 +160,9 @@ resource "aws_iam_role_policy" "cp_runner_policy" {
 }
 
 # Add S3 read access policy for controller role
-resource "aws_iam_role_policy" "cp_s3_read_policy" {
-  count = var.iam_controller_role_name != null ? 1 : 0
-  name  = "${var.iam_controller_role_name}-s3-read-policy"
-  role  = aws_iam_role.cp_role[0].name
+resource "aws_iam_policy" "cp_s3_read_policy" {
+  count = var.iam_controller_role_name != null || var.create_policies ? 1 : 0
+  name  = "${var.iam_controller_role_name != null ? var.iam_controller_role_name : "harness-byoc-cp-role"}-s3-read-policy"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -183,6 +181,19 @@ resource "aws_iam_role_policy" "cp_s3_read_policy" {
       }
     ]
   })
+}
+
+# Attach policies to controller role
+resource "aws_iam_role_policy_attachment" "cp_runner_policy_attachment" {
+  count      = var.iam_controller_role_name != null ? 1 : 0
+  role       = aws_iam_role.cp_role[0].name
+  policy_arn = aws_iam_policy.cp_runner_policy[0].arn
+}
+
+resource "aws_iam_role_policy_attachment" "cp_s3_read_policy_attachment" {
+  count      = var.iam_controller_role_name != null ? 1 : 0
+  role       = aws_iam_role.cp_role[0].name
+  policy_arn = aws_iam_policy.cp_s3_read_policy[0].arn
 }
 
 # EKS Pod Identity Association
