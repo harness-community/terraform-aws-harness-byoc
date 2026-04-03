@@ -1,6 +1,10 @@
-# BYOC Stand-Alone Infrastructure
+# Harness VM Runner Stand-Alone Infrastructure
 
-This Terraform module creates the necessary AWS infrastructure for BYOC (Bring Your Own Cloud) deployments, excluding VPC and EKS which must be created separately.
+This Terraform module creates the necessary AWS infrastructure for the Harness VM Runner, excluding VPC and EKS which must be created separately.
+
+The runner itself is not provisioned via this module and should be done seperatly in your hosting provider of choice:
+- [ECS](https://github.com/harness-community/terraform-aws-harness-delegate-ecs-fargate)
+- [Helm]() (in-progress)
 
 ## Prerequisites
 
@@ -20,8 +24,7 @@ Before using this module, you must have:
 
 This module creates the following AWS resources:
 
-- **S3 Buckets** (2):
-  - Cache service bucket
+- **S3 Buckets**:
   - Harness TI bucket
 
 - **RDS PostgreSQL**:
@@ -38,14 +41,6 @@ This module creates the following AWS resources:
 - **Security Groups**:
   - Standalone security group (optional)
   - RDS security group
-
-- **DataSync** (optional):
-  - GCP to S3 sync task
-  - DataSync IAM role
-  - DataSync locations
-
-- **OIDC Provider**:
-  - Harness OIDC identity provider
 
 ## Usage
 
